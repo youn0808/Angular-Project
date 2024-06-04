@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
-import { DUMMY_USERS } from './dummy-users';
+import { Component,EventEmitter,Input, Output } from '@angular/core';
 
-const randomIndex = Math.floor(Math.random()*DUMMY_USERS.length)
+// type User = {
+//   id:String;
+//   avatar: string;
+//   name:String;
+// }
 
 @Component({
   selector: 'app-user',
@@ -11,9 +14,18 @@ const randomIndex = Math.floor(Math.random()*DUMMY_USERS.length)
   styleUrl: './user.component.css'
 })
 export class UserComponent {
-  selectedUser = DUMMY_USERS[randomIndex];
+  @Input({required:true}) user! : {
+    id:String;
+    name:String;
+    avatar:String;
+  }
+  @Output() selectedOne = new EventEmitter();
 
   get imagePath() {
-    return 'assets/users/' + this.selectedUser.avatar
+    return 'assets/users/'+this.user.avatar;
+  }
+
+  onSelectUser() { 
+     this.selectedOne.emit(this.user.id)
   }
 }
